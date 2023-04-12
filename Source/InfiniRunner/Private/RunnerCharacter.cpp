@@ -2,10 +2,21 @@
 
 
 #include "RunnerCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 ARunnerCharacter::ARunnerCharacter()
 {
+	StaticMeshComp = CreateDefaultSubobject <UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	StaticMeshComp->SetupAttachment(RootComponent);
 
+	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
+	CameraArm->SetupAttachment(StaticMeshComp);
+	CameraArm->TargetArmLength = 100.f;
+
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	CameraComponent->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
+	CameraComponent->bUsePawnControlRotation = false;
 }
 
 void ARunnerCharacter::BeginPlay()
@@ -19,16 +30,15 @@ void ARunnerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(JumpMappingContext, 0);
 		}
 	}
+
+	if (CameraComponent) {
+		CameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	}
 }
 
 void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
 {
-	const bool CurrentValue = Value.Get<bool>();
-	if (CurrentValue) {
-		UE_LOG(LogTemp, Warning, TEXT("Jump"));
-	}
 	this->Jump();
-
 }
 
 void ARunnerCharacter::Tick(float DeltaTime)

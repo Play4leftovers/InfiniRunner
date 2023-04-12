@@ -6,12 +6,13 @@
 #include "PaperCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
-#include "Components/InputComponent.h"
 #include "InputActionValue.h"
 #include "RunnerCharacter.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
+class UCameraComponent;
+class USpringArmComponent;
 
 /**
  * 
@@ -34,6 +35,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* JumpAction;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	USpringArmComponent* CameraArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	UCameraComponent* CameraComponent;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* StaticMeshComp;
 public:
 	virtual void Tick(float DeltaTime) override;
 
