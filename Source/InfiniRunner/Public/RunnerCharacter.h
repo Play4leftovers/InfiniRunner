@@ -27,7 +27,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void JumpMovement(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* JumpMappingContext;
@@ -47,4 +46,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+	void JumpMovement(const FInputActionValue& Value);
 };

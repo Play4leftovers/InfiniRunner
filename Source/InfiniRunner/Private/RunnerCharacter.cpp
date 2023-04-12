@@ -9,7 +9,6 @@ ARunnerCharacter::ARunnerCharacter()
 {
 	StaticMeshComp = CreateDefaultSubobject <UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComp->SetupAttachment(RootComponent);
-
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
 	CameraArm->SetupAttachment(StaticMeshComp);
 	CameraArm->TargetArmLength = 100.f;
@@ -31,9 +30,9 @@ void ARunnerCharacter::BeginPlay()
 		}
 	}
 
-	if (CameraComponent) {
+	/*if (CameraComponent) {
 		CameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	}
+	}*/
 }
 
 void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
