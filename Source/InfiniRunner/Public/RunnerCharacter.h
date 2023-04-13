@@ -42,6 +42,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComp;
+
 public:
 	virtual void Tick(float DeltaTime) override;
 
