@@ -27,11 +27,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> LevelParts;
-	TArray<AActor> SpawnedActor;
+	TArray<AActor*> SpawnedActor;
 
 	UPROPERTY(EditAnywhere)
-	int PlatformSize;
+	FVector TravelSpeed;
 
 	UPROPERTY(EditAnywhere)
-	float TravelSpeed;
+	float SpeedIncrease;
 };

@@ -16,22 +16,33 @@ ALevelSpawner::ALevelSpawner()
 void ALevelSpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AActor* ResultPawn;
+	ResultPawn = GetWorld()->SpawnActor<AActor>(LevelParts[0], FVector(-768, -600, 0), FRotator(0, 0, 0));
+	SpawnedActor.Add(ResultPawn);
+
 	for(int i = 0; i<5; i++)
 	{
-
+		SpawnPlatform(0);
 	}
 }
 
-void ALevelSpawner::SpawnPlatform(int Position)
+void ALevelSpawner::SpawnPlatform(int ArrayPosition)
 {
-	//Change FVector and FRotator to fit the correct spawn location
-	AActor* ResultPawn = GetWorld()->SpawnActor<AActor>(LevelParts[Position], FVector(0,0,0), FRotator(0,0,0));
+	AActor* ResultPawn;
+	FVector LastPlatformPosition = SpawnedActor.Last()->GetActorLocation();
+	ResultPawn = GetWorld()->SpawnActor<AActor>(LevelParts[ArrayPosition], LastPlatformPosition + FVector(364.0, 0, 0), FRotator(0, 0, 0));
+	SpawnedActor.Add(ResultPawn);
 }
 
 // Called every frame
 void ALevelSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+	TravelSpeed.X -= SpeedIncrease;
+	for (int i = 0; i < SpawnedActor.Num(); i++) {
+		AActor* temp = SpawnedActor[i];
+		temp->SetActorLocation(temp->GetActorLocation() + TravelSpeed);
+	}
 }
 

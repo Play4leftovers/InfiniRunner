@@ -44,6 +44,8 @@ void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
 void ARunnerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	XVelocity.X += SpeedIncrease;
+	this->AddMovementInput(XVelocity);
 }
 
 void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

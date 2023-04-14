@@ -43,6 +43,12 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComp;
 
+	UPROPERTY(EditAnywhere)
+	float SpeedIncrease;
+
+	UPROPERTY(EditAnywhere)
+	FVector XVelocity;
+
 public:
 	virtual void Tick(float DeltaTime) override;
 
