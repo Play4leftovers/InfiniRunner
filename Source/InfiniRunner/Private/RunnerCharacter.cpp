@@ -23,6 +23,8 @@ void ARunnerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	StartingPosition = this->GetActorLocation();
+
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (PlayerController) {
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
@@ -41,11 +43,32 @@ void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
 	this->Jump();
 }
 
+void ARunnerCharacter::TakeDamage()
+{
+	Lives--;
+	if (Lives == 0) {
+		//Lose game
+	}
+	this->SetActorLocation(StartingPosition);
+	StartGracePeriod();
+	//If lives > 0, reset character position and create grace time
+}
+
+void ARunnerCharacter::StartGracePeriod()
+{
+	//Spawn platform under player to prevent falling
+	//Disable collision with normal terrain
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, false, GracePeriod);
+}
+
+void ARunnerCharacter::StopGracePeriod()
+{
+	
+}
+
 void ARunnerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	XVelocity.X += SpeedIncrease;
-	this->AddMovementInput(XVelocity);
 }
 
 void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

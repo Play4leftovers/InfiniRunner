@@ -21,7 +21,7 @@ void ALevelSpawner::BeginPlay()
 	ResultPawn = GetWorld()->SpawnActor<AActor>(LevelParts[0], FVector(-768, -600, 0), FRotator(0, 0, 0));
 	SpawnedActor.Add(ResultPawn);
 
-	for(int i = 0; i<5; i++)
+	for(int i = 0; i<3; i++)
 	{
 		SpawnPlatform(0);
 	}
@@ -31,7 +31,7 @@ void ALevelSpawner::SpawnPlatform(int ArrayPosition)
 {
 	AActor* ResultPawn;
 	FVector LastPlatformPosition = SpawnedActor.Last()->GetActorLocation();
-	ResultPawn = GetWorld()->SpawnActor<AActor>(LevelParts[ArrayPosition], LastPlatformPosition + FVector(364.0, 0, 0), FRotator(0, 0, 0));
+	ResultPawn = GetWorld()->SpawnActor<AActor>(LevelParts[ArrayPosition], LastPlatformPosition + FVector(380.0, 0, 0), FRotator(0, 0, 0));
 	SpawnedActor.Add(ResultPawn);
 }
 
@@ -39,10 +39,17 @@ void ALevelSpawner::SpawnPlatform(int ArrayPosition)
 void ALevelSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	TravelSpeed.X -= SpeedIncrease;
+	//TravelSpeed.X -= SpeedIncrease;
 	for (int i = 0; i < SpawnedActor.Num(); i++) {
 		AActor* temp = SpawnedActor[i];
-		temp->SetActorLocation(temp->GetActorLocation() + TravelSpeed);
+		temp->SetActorLocation(temp->GetActorLocation() - TravelSpeed);
+	}
+
+	if (SpawnedActor[0]->GetActorLocation().X < -1152.0) {
+		AActor* temp = SpawnedActor[0];
+		SpawnedActor.RemoveAt(0);
+		temp->Destroy();
+		SpawnPlatform(FMath::RandRange(0, LevelParts.Num() - 1));
 	}
 }
 

@@ -43,11 +43,25 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComp;
 
+	FTimerHandle MemberTimerHandle;
+
 	UPROPERTY(EditAnywhere)
 	float SpeedIncrease;
 
 	UPROPERTY(EditAnywhere)
+	float GracePeriod;
+
+	UPROPERTY(EditAnywhere)
 	FVector XVelocity;
+
+	UPROPERTY(EditAnywhere)
+	FVector StartingPosition;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Lives;
+
+	bool CanFall;
+	bool CanBeDamaged;
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -55,4 +69,10 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	void JumpMovement(const FInputActionValue& Value);
+
+	void TakeDamage();
+
+	void StartGracePeriod();
+
+	void StopGracePeriod();
 };
