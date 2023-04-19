@@ -43,6 +43,10 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<AActor> Platform;
+	AActor* SpawnedPlatform;
+
 	FTimerHandle MemberTimerHandle;
 
 	UPROPERTY(EditAnywhere)
@@ -70,7 +74,7 @@ public:
 
 	void JumpMovement(const FInputActionValue& Value);
 
-	void TakeDamage();
+	void Damaged();
 
 	void StartGracePeriod();
 

@@ -3,6 +3,7 @@
 
 #include "RunnerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/PrimitiveComponent.h" 
 #include "Camera/CameraComponent.h"
 
 ARunnerCharacter::ARunnerCharacter()
@@ -36,6 +37,8 @@ void ARunnerCharacter::BeginPlay()
 	if (CameraComponent) {
 		CameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	}
+	SpawnedPlatform = GetWorld()->SpawnActor<AActor>(Platform, FVector(-420, -600, -401), FRotator(0, 0, 0));
+	SpawnedPlatform->SetActorEnableCollision(false);
 }
 
 void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
@@ -43,7 +46,7 @@ void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
 	this->Jump();
 }
 
-void ARunnerCharacter::TakeDamage()
+void ARunnerCharacter::Damaged()
 {
 	Lives--;
 	if (Lives == 0) {
@@ -57,13 +60,14 @@ void ARunnerCharacter::TakeDamage()
 void ARunnerCharacter::StartGracePeriod()
 {
 	//Spawn platform under player to prevent falling
+	SpawnedPlatform->SetActorEnableCollision(true);
 	//Disable collision with normal terrain
-	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, false, GracePeriod);
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, -1.0f, false, GracePeriod);
 }
 
 void ARunnerCharacter::StopGracePeriod()
 {
-	
+	SpawnedPlatform->SetActorEnableCollision(false);
 }
 
 void ARunnerCharacter::Tick(float DeltaTime)
@@ -76,6 +80,6 @@ void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ARunnerCharacter::JumpMovement);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ARunnerCharacter::JumpMovement);
 	}
 }
