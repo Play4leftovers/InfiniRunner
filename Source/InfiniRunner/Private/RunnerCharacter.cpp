@@ -62,17 +62,20 @@ void ARunnerCharacter::StartGracePeriod()
 	//Spawn platform under player to prevent falling
 	SpawnedPlatform->SetActorEnableCollision(true);
 	//Disable collision with normal terrain
-	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, -1.0f, false, GracePeriod);
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, 0.1f, false, GracePeriod);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Grace Period Started"));
 }
 
 void ARunnerCharacter::StopGracePeriod()
 {
 	SpawnedPlatform->SetActorEnableCollision(false);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Grace Period Stopped"));
 }
 
 void ARunnerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	this->AddMovementInput(FVector::ForwardVector * XVelocity);
 }
 
 void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

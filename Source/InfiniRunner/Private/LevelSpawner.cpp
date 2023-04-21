@@ -42,7 +42,7 @@ void ALevelSpawner::Tick(float DeltaTime)
 	//TravelSpeed.X -= SpeedIncrease;
 	for (int i = 0; i < SpawnedActor.Num(); i++) {
 		AActor* temp = SpawnedActor[i];
-		temp->SetActorLocation(temp->GetActorLocation() - TravelSpeed);
+		temp->SetActorLocation(temp->GetActorLocation() - TravelSpeed * DeltaTime);
 	}
 
 	if (SpawnedActor[0]->GetActorLocation().X < -1152.0) {

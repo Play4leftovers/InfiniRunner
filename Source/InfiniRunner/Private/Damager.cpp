@@ -29,16 +29,14 @@ void ADamager::BeginPlay()
 void ADamager::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ARunnerCharacter* TempChar = Cast<ARunnerCharacter>(OtherActor);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Something Overlapped"));
 	if (TempChar) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Did it"));
 		TempChar->Damaged();
 	}
 }
 
 void ADamager::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Something Stopped Overlapping"));
+
 }
 
 // Called every frame
