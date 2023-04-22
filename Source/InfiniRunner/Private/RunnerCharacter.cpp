@@ -2,6 +2,7 @@
 
 
 #include "RunnerCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h" 
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/PrimitiveComponent.h" 
 #include "Camera/CameraComponent.h"
@@ -30,15 +31,18 @@ void ARunnerCharacter::BeginPlay()
 	if (PlayerController) {
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
 		if (Subsystem) {
-			Subsystem->AddMappingContext(JumpMappingContext, 0);
+			Subsystem->AddMappingContext(ControlMappingContext, 0);
 		}
 	}
 
 	if (CameraComponent) {
 		CameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	}
-	SpawnedPlatform = GetWorld()->SpawnActor<AActor>(Platform, FVector(-420, -600, -401), FRotator(0, 0, 0));
+	SpawnedPlatform = GetWorld()->SpawnActor<AActor>(Platform, FVector(-420, -600, -404), FRotator(0, 0, 0));
 	SpawnedPlatform->SetActorEnableCollision(false);
+	//Spawned platform error causing character to accelerate when running on it
+	//Cause: It does not move backwards, so character will not get a +- 0 on speed
+	//Look into removing it completely
 }
 
 void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
@@ -75,7 +79,9 @@ void ARunnerCharacter::StopGracePeriod()
 void ARunnerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	this->AddMovementInput(FVector::ForwardVector * XVelocity);
+	if (this->GetCharacterMovement()->IsFalling() == false) {
+		this->GetCharacterMovement()->Velocity.X = XVelocity.X;
+	}
 }
 
 void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
