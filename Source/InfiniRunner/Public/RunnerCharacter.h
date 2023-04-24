@@ -33,6 +33,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* JumpAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* LeftAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* RightAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera)
 	USpringArmComponent* CameraArm;
@@ -67,12 +71,16 @@ protected:
 	bool CanFall;
 	bool CanBeDamaged;
 
+	float MovementModifier;
+
 public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	void JumpMovement(const FInputActionValue& Value);
+	void LeftMovement(const FInputActionValue& Value);
+	void RightMovement(const FInputActionValue& Value);
 
 	void Damaged();
 

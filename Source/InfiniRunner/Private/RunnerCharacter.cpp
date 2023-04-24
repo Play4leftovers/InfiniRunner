@@ -50,6 +50,16 @@ void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
 	this->Jump();
 }
 
+void ARunnerCharacter::LeftMovement(const FInputActionValue& Value)
+{
+	MovementModifier = -SpeedIncrease;
+}
+
+void ARunnerCharacter::RightMovement(const FInputActionValue& Value)
+{
+	MovementModifier = SpeedIncrease;
+}
+
 void ARunnerCharacter::Damaged()
 {
 	Lives--;
@@ -80,7 +90,8 @@ void ARunnerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (this->GetCharacterMovement()->IsFalling() == false) {
-		this->GetCharacterMovement()->Velocity.X = XVelocity.X;
+		this->GetCharacterMovement()->Velocity.X = XVelocity.X + MovementModifier;
+		MovementModifier = 0;
 	}
 }
 
@@ -90,5 +101,7 @@ void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ARunnerCharacter::JumpMovement);
+		EnhancedInputComponent->BindAction(LeftAction, ETriggerEvent::Triggered, this, &ARunnerCharacter::LeftMovement);
+		EnhancedInputComponent->BindAction(RightAction, ETriggerEvent::Triggered, this, &ARunnerCharacter::RightMovement);
 	}
 }
