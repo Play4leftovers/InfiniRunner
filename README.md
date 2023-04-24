@@ -1,8 +1,8 @@
-Title: InfiniteRunner
-By: Tor Nordmark, GP22
+Title - InfiniteRunner
+By - Tor Nordmark, GP22
 
-Description
-A simple Infinite Runner game made in Unreal using as much C++ only programming as possible.
+Description - A simple Infinite Runner game made in Unreal using as much C++ only programming as possible.
+
 
 								Features
 								Part 1
