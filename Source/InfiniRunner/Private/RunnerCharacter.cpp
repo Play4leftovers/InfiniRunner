@@ -77,13 +77,11 @@ void ARunnerCharacter::StartGracePeriod()
 	SpawnedPlatform->SetActorEnableCollision(true);
 	//Disable collision with normal terrain
 	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, 0.1f, false, GracePeriod);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Grace Period Started"));
 }
 
 void ARunnerCharacter::StopGracePeriod()
 {
 	SpawnedPlatform->SetActorEnableCollision(false);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Grace Period Stopped"));
 }
 
 void ARunnerCharacter::Tick(float DeltaTime)

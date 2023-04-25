@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Damager.h"
+#include "Explosion.h"
 #include "RunnerCharacter.h"
-
+#include "Components/SphereComponent.h" 
 // Sets default values
-ADamager::ADamager()
+AExplosion::AExplosion()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -13,19 +13,19 @@ ADamager::ADamager()
 	SetRootComponent(DefaultSceneRoot);
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	StaticMesh->SetupAttachment(DefaultSceneRoot);
-	Box = CreateDefaultSubobject<UBoxComponent>(FName("Box"));
-	Box->SetupAttachment(DefaultSceneRoot);
+	Sphere = CreateDefaultSubobject<USphereComponent>(FName("Sphere"));
+	Sphere->SetupAttachment(DefaultSceneRoot);
 }
 
 // Called when the game starts or when spawned
-void ADamager::BeginPlay()
+void AExplosion::BeginPlay()
 {
 	Super::BeginPlay();
-	Box->OnComponentBeginOverlap.AddDynamic(this, &ADamager::OverlapBegin);
-	Box->OnComponentEndOverlap.AddDynamic(this, &ADamager::OverlapEnd);
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AExplosion::OverlapBegin);
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AExplosion::ExplosionEnd, 0.1f, false, ExplosionDuration);
 }
 
-void ADamager::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AExplosion::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ARunnerCharacter* TempChar = Cast<ARunnerCharacter>(OtherActor);
 	if (TempChar) {
@@ -33,15 +33,8 @@ void ADamager::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	}
 }
 
-void ADamager::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AExplosion::ExplosionEnd()
 {
-
-}
-
-// Called every frame
-void ADamager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	this->Destroy();
 }
 
