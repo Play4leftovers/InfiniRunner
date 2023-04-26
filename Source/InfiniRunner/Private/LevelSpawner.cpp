@@ -25,6 +25,8 @@ void ALevelSpawner::BeginPlay()
 	{
 		SpawnPlatform(0);
 	}
+
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ALevelSpawner::SpawnArrows, ArrowSpawnTimer, true, 2.0f);
 }
 
 void ALevelSpawner::SpawnPlatform(int ArrayPosition)
@@ -35,21 +37,40 @@ void ALevelSpawner::SpawnPlatform(int ArrayPosition)
 	SpawnedActor.Add(ResultPawn);
 }
 
+void ALevelSpawner::SpawnArrows()
+{
+	AActor* ResultPawn;
+	int temp = FMath::RandRange(-256, 0);
+	ResultPawn = GetWorld()->SpawnActor<AActor>(Arrows, FVector(256, -600, temp), FRotator(0, 0, 0));
+	SpawnedArrows.Add(ResultPawn);
+}
+
 // Called every frame
 void ALevelSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//TravelSpeed.X -= SpeedIncrease;
+
 	for (int i = 0; i < SpawnedActor.Num(); i++) {
-		AActor* temp = SpawnedActor[i];
-		temp->SetActorLocation(temp->GetActorLocation() - TravelSpeed * DeltaTime);
+		TempPlatform = SpawnedActor[i];
+		TempPlatform->SetActorLocation(TempPlatform->GetActorLocation() - TravelSpeed * DeltaTime);
+	}
+	if (SpawnedActor[0]->GetActorLocation().X < -1152.0) {
+		TempPlatform = SpawnedActor[0];
+		SpawnedActor.RemoveAt(0);
+		TempPlatform->Destroy();
+		SpawnPlatform(FMath::RandRange(0, LevelParts.Num() - 1));
 	}
 
-	if (SpawnedActor[0]->GetActorLocation().X < -1152.0) {
-		AActor* temp = SpawnedActor[0];
-		SpawnedActor.RemoveAt(0);
-		temp->Destroy();
-		SpawnPlatform(FMath::RandRange(0, LevelParts.Num() - 1));
+	if (SpawnedArrows.Num() > 0) {
+		for (int i = 0; i < SpawnedArrows.Num(); i++) {
+			TempArrows = SpawnedArrows[i];
+			TempArrows->SetActorLocation(TempArrows->GetActorLocation() - ArrowSpeed * DeltaTime);
+		}
+		if (SpawnedArrows[0]->GetActorLocation().X < -1152.0) {
+			TempArrows = SpawnedArrows[0];
+			SpawnedArrows.RemoveAt(0);
+			TempArrows->Destroy();
+		}
 	}
 }
 

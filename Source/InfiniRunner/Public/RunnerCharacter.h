@@ -68,7 +68,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Lives;
 
-	bool CanFall;
 	bool CanBeDamaged;
 
 	float MovementModifier;

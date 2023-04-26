@@ -22,7 +22,6 @@ void ADamager::BeginPlay()
 {
 	Super::BeginPlay();
 	Box->OnComponentBeginOverlap.AddDynamic(this, &ADamager::OverlapBegin);
-	Box->OnComponentEndOverlap.AddDynamic(this, &ADamager::OverlapEnd);
 }
 
 void ADamager::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -31,11 +30,6 @@ void ADamager::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	if (TempChar) {
 		TempChar->Damaged();
 	}
-}
-
-void ADamager::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-
 }
 
 // Called every frame

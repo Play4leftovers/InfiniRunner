@@ -40,6 +40,7 @@ void ARunnerCharacter::BeginPlay()
 	}
 	SpawnedPlatform = GetWorld()->SpawnActor<AActor>(Platform, FVector(-420, -600, -404), FRotator(0, 0, 0));
 	SpawnedPlatform->SetActorEnableCollision(false);
+	CanBeDamaged = true;
 	//Spawned platform error causing character to accelerate when running on it
 	//Cause: It does not move backwards, so character will not get a +- 0 on speed
 	//Look into removing it completely
@@ -62,25 +63,28 @@ void ARunnerCharacter::RightMovement(const FInputActionValue& Value)
 
 void ARunnerCharacter::Damaged()
 {
+	if (!CanBeDamaged) {
+		return;
+	}
+	
 	Lives--;
 	if (Lives == 0) {
 		//Lose game
 	}
 	this->SetActorLocation(StartingPosition);
 	StartGracePeriod();
-	//If lives > 0, reset character position and create grace time
 }
 
 void ARunnerCharacter::StartGracePeriod()
 {
-	//Spawn platform under player to prevent falling
 	SpawnedPlatform->SetActorEnableCollision(true);
-	//Disable collision with normal terrain
+	CanBeDamaged = false;
 	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, 0.1f, false, GracePeriod);
 }
 
 void ARunnerCharacter::StopGracePeriod()
 {
+	CanBeDamaged = true;
 	SpawnedPlatform->SetActorEnableCollision(false);
 }
 

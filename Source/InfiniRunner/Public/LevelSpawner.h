@@ -21,6 +21,8 @@ protected:
 
 	void SpawnPlatform(int Position);
 
+	void SpawnArrows();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -28,10 +30,24 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> LevelParts;
 	TArray<AActor*> SpawnedActor;
+	AActor* TempPlatform;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> Arrows;
+	TArray<AActor*> SpawnedArrows;
+	AActor* TempArrows;
 
 	UPROPERTY(EditAnywhere)
 	FVector TravelSpeed;
 
 	UPROPERTY(EditAnywhere)
+	FVector ArrowSpeed;
+
+	UPROPERTY(EditAnywhere)
 	float SpeedIncrease;
+
+	UPROPERTY(EditAnywhere)
+	float ArrowSpawnTimer;
+
+	FTimerHandle MemberTimerHandle;
 };
