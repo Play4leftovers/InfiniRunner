@@ -32,6 +32,7 @@ void ARunnerCharacter::BeginPlay()
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
 		if (Subsystem) {
 			Subsystem->AddMappingContext(ControlMappingContext, 0);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Added Mapping Context"));
 		}
 	}
 
