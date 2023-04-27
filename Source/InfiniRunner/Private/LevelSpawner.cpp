@@ -51,25 +51,40 @@ void ALevelSpawner::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	for (int i = 0; i < SpawnedActor.Num(); i++) {
-		TempPlatform = SpawnedActor[i];
+		AActor* TempPlatform = SpawnedActor[i];
 		TempPlatform->SetActorLocation(TempPlatform->GetActorLocation() - TravelSpeed * DeltaTime);
 	}
 	if (SpawnedActor[0]->GetActorLocation().X < -1152.0) {
-		TempPlatform = SpawnedActor[0];
+		AActor* TempPlatform = SpawnedActor[0];
 		SpawnedActor.RemoveAt(0);
 		TempPlatform->Destroy();
 		SpawnPlatform(FMath::RandRange(0, LevelParts.Num() - 1));
 	}
 
 	if (SpawnedArrows.Num() > 0) {
-		for (int i = 0; i < SpawnedArrows.Num(); i++) {
-			TempArrows = SpawnedArrows[i];
-			TempArrows->SetActorLocation(TempArrows->GetActorLocation() - ArrowSpeed * DeltaTime);
-		}
 		if (SpawnedArrows[0]->GetActorLocation().X < -1152.0) {
-			TempArrows = SpawnedArrows[0];
+			AActor* TempArrows = SpawnedArrows[0];
 			SpawnedArrows.RemoveAt(0);
 			TempArrows->Destroy();
+		}
+		for (int i = 0; i < SpawnedArrows.Num(); i++) {
+			AActor* TempArrows = SpawnedArrows[i];
+			TempArrows->SetActorLocation(TempArrows->GetActorLocation() - ArrowSpeed * DeltaTime);
+			if (SpawnedArrows[i]->IsHidden()) {
+				TempArrows = SpawnedArrows[i];
+				SpawnedArrows.RemoveAt(i);
+				TempArrows->Destroy();
+
+				if (SpawnedArrows.Num() > 0) {
+					int RandomChance = FMath::RandRange(0, 100);
+					if (RandomChance <= 25) {
+						RandomChance = FMath::RandRange(0, SpawnedArrows.Num()-1);
+						TempArrows = SpawnedArrows[RandomChance];
+						SpawnedArrows.RemoveAt(RandomChance);
+						TempArrows->Destroy();
+					}
+				}
+			}
 		}
 	}
 }

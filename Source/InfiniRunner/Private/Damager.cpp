@@ -29,6 +29,9 @@ void ADamager::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	ARunnerCharacter* TempChar = Cast<ARunnerCharacter>(OtherActor);
 	if (TempChar) {
 		TempChar->Damaged();
+		if (ActorHasTag("Arrow")) {
+			this->SetHidden(true);
+		}
 	}
 }
 

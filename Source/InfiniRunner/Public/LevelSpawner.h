@@ -30,12 +30,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> LevelParts;
 	TArray<AActor*> SpawnedActor;
-	AActor* TempPlatform;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> Arrows;
 	TArray<AActor*> SpawnedArrows;
-	AActor* TempArrows;
 
 	UPROPERTY(EditAnywhere)
 	FVector TravelSpeed;
