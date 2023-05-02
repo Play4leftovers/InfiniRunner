@@ -13,6 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 class UCameraComponent;
 class USpringArmComponent;
+class APlayer2;
 
 /**
  * 
@@ -38,6 +39,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 		UInputAction* RightAction;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* JumpAction2;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* LeftAction2;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* RightAction2;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera)
 	USpringArmComponent* CameraArm;
 
@@ -50,6 +59,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AActor> Platform;
 	AActor* SpawnedPlatform;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> SecondPlayerActor;
+	APlayer2* Player2;
 
 	FTimerHandle MemberTimerHandle;
 
@@ -80,6 +93,12 @@ public:
 	void JumpMovement(const FInputActionValue& Value);
 	void LeftMovement(const FInputActionValue& Value);
 	void RightMovement(const FInputActionValue& Value);
+	void JumpMovementPlayer2(const FInputActionValue& Value);
+	void LeftMovementPlayer2(const FInputActionValue& Value);
+	void RightMovementPlayer2(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void CreatePlayer2();
 
 	void Damaged();
 

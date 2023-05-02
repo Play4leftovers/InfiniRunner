@@ -3,6 +3,7 @@
 
 #include "Damager.h"
 #include "RunnerCharacter.h"
+#include "Player2.h"
 
 // Sets default values
 ADamager::ADamager()
@@ -27,8 +28,15 @@ void ADamager::BeginPlay()
 void ADamager::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ARunnerCharacter* TempChar = Cast<ARunnerCharacter>(OtherActor);
+	APlayer2* TempChar2 = Cast<APlayer2>(OtherActor);
 	if (TempChar) {
 		TempChar->Damaged();
+		if (ActorHasTag("Arrow")) {
+			this->SetHidden(true);
+		}
+	}
+	if (TempChar2) {
+		TempChar2->Damaged();
 		if (ActorHasTag("Arrow")) {
 			this->SetHidden(true);
 		}

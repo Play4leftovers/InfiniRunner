@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h" 
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/PrimitiveComponent.h" 
+#include "Player2.h"
 #include "Camera/CameraComponent.h"
 
 ARunnerCharacter::ARunnerCharacter()
@@ -32,13 +33,13 @@ void ARunnerCharacter::BeginPlay()
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
 		if (Subsystem) {
 			Subsystem->AddMappingContext(ControlMappingContext, 0);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Added Mapping Context"));
 		}
 	}
 
 	if (CameraComponent) {
 		CameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	}
+	CreatePlayer2();
 	SpawnedPlatform = GetWorld()->SpawnActor<AActor>(Platform, FVector(-420, -600, -404), FRotator(0, 0, 0));
 	SpawnedPlatform->SetActorEnableCollision(false);
 	CanBeDamaged = true;
@@ -60,6 +61,31 @@ void ARunnerCharacter::LeftMovement(const FInputActionValue& Value)
 void ARunnerCharacter::RightMovement(const FInputActionValue& Value)
 {
 	MovementModifier = SpeedIncrease;
+}
+
+void ARunnerCharacter::JumpMovementPlayer2(const FInputActionValue& Value)
+{
+	Player2->JumpMovement();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Jump Called"));
+}
+
+void ARunnerCharacter::LeftMovementPlayer2(const FInputActionValue& Value)
+{
+	Player2->LeftMovement();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Move Left Called"));
+}
+
+void ARunnerCharacter::RightMovementPlayer2(const FInputActionValue& Value)
+{
+	Player2->RightMovement();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Move Right Called"));
+}
+
+void ARunnerCharacter::CreatePlayer2()
+{
+	Player2 = GetWorld()->SpawnActor<APlayer2>(SecondPlayerActor, StartingPosition + FVector(128,0,0), FRotator(0, 0, 0));
+	Player2->SetPlayer1(this);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Ran CreatePlayer2"));
 }
 
 void ARunnerCharacter::Damaged()
@@ -106,5 +132,10 @@ void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ARunnerCharacter::JumpMovement);
 		EnhancedInputComponent->BindAction(LeftAction, ETriggerEvent::Triggered, this, &ARunnerCharacter::LeftMovement);
 		EnhancedInputComponent->BindAction(RightAction, ETriggerEvent::Triggered, this, &ARunnerCharacter::RightMovement);
+
+
+		EnhancedInputComponent->BindAction(JumpAction2, ETriggerEvent::Started, this, &ARunnerCharacter::JumpMovementPlayer2);
+		EnhancedInputComponent->BindAction(LeftAction2, ETriggerEvent::Triggered, this, &ARunnerCharacter::LeftMovementPlayer2);
+		EnhancedInputComponent->BindAction(RightAction2, ETriggerEvent::Triggered, this, &ARunnerCharacter::RightMovementPlayer2);
 	}
 }
