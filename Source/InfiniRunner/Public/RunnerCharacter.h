@@ -81,6 +81,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Lives;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Score;
+	FTimerHandle ScoreTimerHandle;
+
 	bool CanBeDamaged;
 
 	float MovementModifier;
@@ -102,7 +106,11 @@ public:
 
 	void Damaged();
 
-	void StartGracePeriod();
+	UFUNCTION()
+	void GameLost();
 
+	void StartGracePeriod();
 	void StopGracePeriod();
+
+	void ScorePoint();
 };

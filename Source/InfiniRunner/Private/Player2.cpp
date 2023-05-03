@@ -27,31 +27,29 @@ void APlayer2::Tick(float DeltaTime)
 
 void APlayer2::JumpMovement()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Jump"));
 	this->Jump();
 }
 
 void APlayer2::LeftMovement()
 {
 	MovementModifier = -SpeedIncrease;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Move Left"));
 }
 
 void APlayer2::RightMovement()
 {
 	MovementModifier = SpeedIncrease;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Move Right"));
 }
 
 void APlayer2::SetPlayer1(ARunnerCharacter* Player1)
 {
 	PlayerOne = Player1;
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Set Player One"));
 }
 
 void APlayer2::Damaged()
 {
+	if (!CanBeDamaged) {
+		return;
+	}
+	this->SetActorLocation(StartingPosition);
 	PlayerOne->Damaged();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Damaged"));
 }

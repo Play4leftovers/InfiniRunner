@@ -45,4 +45,6 @@ public:
 	void RightMovement();
 	void SetPlayer1(ARunnerCharacter* Player1);
 	void Damaged();
+
+	bool CanBeDamaged;
 };

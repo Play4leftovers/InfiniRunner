@@ -46,6 +46,8 @@ void ARunnerCharacter::BeginPlay()
 	//Spawned platform error causing character to accelerate when running on it
 	//Cause: It does not move backwards, so character will not get a +- 0 on speed
 	//Look into removing it completely
+
+	GetWorldTimerManager().SetTimer(ScoreTimerHandle, this, &ARunnerCharacter::ScorePoint, 1.f, true, 0);
 }
 
 void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
@@ -66,26 +68,22 @@ void ARunnerCharacter::RightMovement(const FInputActionValue& Value)
 void ARunnerCharacter::JumpMovementPlayer2(const FInputActionValue& Value)
 {
 	Player2->JumpMovement();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Jump Called"));
 }
 
 void ARunnerCharacter::LeftMovementPlayer2(const FInputActionValue& Value)
 {
 	Player2->LeftMovement();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Move Left Called"));
 }
 
 void ARunnerCharacter::RightMovementPlayer2(const FInputActionValue& Value)
 {
 	Player2->RightMovement();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Two Move Right Called"));
 }
 
 void ARunnerCharacter::CreatePlayer2()
 {
 	Player2 = GetWorld()->SpawnActor<APlayer2>(SecondPlayerActor, StartingPosition + FVector(128,0,0), FRotator(0, 0, 0));
 	Player2->SetPlayer1(this);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Ran CreatePlayer2"));
 }
 
 void ARunnerCharacter::Damaged()
@@ -93,26 +91,36 @@ void ARunnerCharacter::Damaged()
 	if (!CanBeDamaged) {
 		return;
 	}
-	
 	Lives--;
-	if (Lives == 0) {
-		//Lose game
+	if (Lives <= 0) {
+		GameLost();
 	}
 	this->SetActorLocation(StartingPosition);
 	StartGracePeriod();
+}
+
+void ARunnerCharacter::GameLost()
+{
 }
 
 void ARunnerCharacter::StartGracePeriod()
 {
 	SpawnedPlatform->SetActorEnableCollision(true);
 	CanBeDamaged = false;
+	Player2->CanBeDamaged = false;
 	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ARunnerCharacter::StopGracePeriod, 0.1f, false, GracePeriod);
 }
 
 void ARunnerCharacter::StopGracePeriod()
 {
 	CanBeDamaged = true;
+	Player2->CanBeDamaged = true;
 	SpawnedPlatform->SetActorEnableCollision(false);
+}
+
+void ARunnerCharacter::ScorePoint()
+{
+	Score++;
 }
 
 void ARunnerCharacter::Tick(float DeltaTime)
