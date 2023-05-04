@@ -47,7 +47,7 @@ void ARunnerCharacter::BeginPlay()
 	//Cause: It does not move backwards, so character will not get a +- 0 on speed
 	//Look into removing it completely
 
-	GetWorldTimerManager().SetTimer(ScoreTimerHandle, this, &ARunnerCharacter::ScorePoint, 1.f, true, 0);
+	GetWorldTimerManager().SetTimer(ScoreTimerHandle, this, &ARunnerCharacter::ScorePoint, 1.f, true, 1);
 }
 
 void ARunnerCharacter::JumpMovement(const FInputActionValue& Value)
@@ -97,10 +97,6 @@ void ARunnerCharacter::Damaged()
 	}
 	this->SetActorLocation(StartingPosition);
 	StartGracePeriod();
-}
-
-void ARunnerCharacter::GameLost()
-{
 }
 
 void ARunnerCharacter::StartGracePeriod()

@@ -106,7 +106,7 @@ public:
 
 	void Damaged();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintImplementableEvent)
 	void GameLost();
 
 	void StartGracePeriod();
