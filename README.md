@@ -7,10 +7,9 @@ Description - A simple Infinite Runner game made in Unreal using as much C++ onl
 	Features Part 1
 - Movement
 Early movement system is based on changing the velocity in X axis, listening to an InputAction. Jump uses Unreal's inbuilt Jump code provided in MovementComponent.
-
-Left - A
-Right - D
-Jump - Spacebar
+Left: A
+Right: D
+Jump: Spacebar
 
 - Scrolling Platforms
 The game handles the scrolling platforms by having a blueprint of the c++ class LevelSpawner.
@@ -35,9 +34,12 @@ In future they will also make it impossible to run the Damaged function until th
 The only Blueprint system is a simple animation switch that checks if the player is falling or not. On falling they play the falling animation, otherwise it plays the standard running animation.
 As of currently, I have no plans on adding or changing this system.
 
-- Known Bugs
-1. Running over a hole while grace period is active causes the player to accelerate rapidly. This is caused because the player moves forward by a set speed and the platforms moves backward at a set speed. Only the grace platform does not move so the player will not face resistance.
-2. Despite the platform scrolling speed and the player speed is set to the same velocity, they are not moving at the same speed. Reason for this is currently unknown.
-
 	Features Part 2
-Added Arrow Trap with commit 68fd2c1
+- Local Multiplayer
+
+- Arrows
+
+- Highscore
+
+	Changelog Part 2
+- Added Arrow Trap with commit 68fd2c1
