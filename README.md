@@ -36,10 +36,16 @@ As of currently, I have no plans on adding or changing this system.
 
 	Features Part 2
 - Local Multiplayer
+Added a second player that is a slave to the first player. It has no controls of its own and is sent its move command from the first players input. It otherwise uses the same movement system.
+Left: D-Pad Left
+Right: D-Pad Right
+Jump: Gamepad Button South (A on Xbox Controller)
 
 - Arrows
+With a regular interval arrows are spawned and sent in the same direction as the platforms at twice the speed. On collision respawns the players and reduces Lives by 1.
 
 - Highscore
+Each second the player is alive and the game is running score is added. When lives reaches 0, it sets the highscore, but only if the current score is above the highscore. On beginplay it then loads up the saved score and displays it.
 
-	Changelog Part 2
-- Added Arrow Trap with commit 68fd2c1
+- Pause
+On start the game pauses indefinitely. To start the game, hit Enter on keyboard. During the pause, nothing happens.
