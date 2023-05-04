@@ -39,3 +39,7 @@ As of currently, I have no plans on adding or changing this system.
 - Known Bugs
 1. Running over a hole while grace period is active causes the player to accelerate rapidly. This is caused because the player moves forward by a set speed and the platforms moves backward at a set speed. Only the grace platform does not move so the player will not face resistance.
 2. Despite the platform scrolling speed and the player speed is set to the same velocity, they are not moving at the same speed. Reason for this is currently unknown.
+
+
+								Changelog Part 2
+Added flying dangerzones called Arrows in commit 68fd2c1c1814eda3015d72b1cf895c8bfaa4d9cc
