@@ -4,8 +4,7 @@ By - Tor Nordmark, GP22
 Description - A simple Infinite Runner game made in Unreal using as much C++ only programming as possible.
 
 
-								Features
-								Part 1
+	Features Part 1
 - Movement
 Early movement system is based on changing the velocity in X axis, listening to an InputAction. Jump uses Unreal's inbuilt Jump code provided in MovementComponent.
 
@@ -40,6 +39,5 @@ As of currently, I have no plans on adding or changing this system.
 1. Running over a hole while grace period is active causes the player to accelerate rapidly. This is caused because the player moves forward by a set speed and the platforms moves backward at a set speed. Only the grace platform does not move so the player will not face resistance.
 2. Despite the platform scrolling speed and the player speed is set to the same velocity, they are not moving at the same speed. Reason for this is currently unknown.
 
-
-								Changelog Part 2
-Added flying dangerzones called Arrows in commit 68fd2c1c1814eda3015d72b1cf895c8bfaa4d9cc
+	Features Part 2
+Added Arrow Trap with commit 68fd2c1
